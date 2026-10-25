@@ -56,8 +56,8 @@ export default function TwinPage() {
       : undefined;
 
   return (
-    <div className="absolute inset-0 overflow-y-auto">
-      <div className="grid min-h-full grid-cols-[minmax(0,1fr)_400px] gap-0">
+    <div className="@container absolute inset-0 overflow-y-auto">
+      <div className="grid min-h-full grid-cols-1 @[760px]:grid-cols-[minmax(0,1fr)_340px] @[1100px]:grid-cols-[minmax(0,1fr)_400px]">
         <div className="flex min-w-0 flex-col px-6 pb-6 pt-5">
           <nav className="text-mist" aria-label="Breadcrumb">
             <Link to="/ops/map" className="hover:text-glass hover:underline underline-offset-4">
@@ -86,7 +86,7 @@ export default function TwinPage() {
             <span>{home.occupants.map((o) => o.name.split(" ")[0]).join(", ")}</span>
           </p>
 
-          <div className="relative mt-4 h-[min(58vh,520px)] shrink-0 rounded-instrument border border-hairline bg-twilight p-3">
+          <div className="relative mt-4 h-[min(52vh,520px)] shrink-0 rounded-instrument border border-hairline bg-twilight p-3">
             {link === "OFFLINE" && (
               <p className="absolute left-4 top-3 z-10 flex items-center gap-2 text-offline">
                 <StatusGlyph severity="NOMINAL" link="OFFLINE" size={14} /> Not reporting. Showing the last known state.
@@ -94,7 +94,7 @@ export default function TwinPage() {
             )}
             <FloorPlan home={liveHome} live={latest} predictions={predictions} onHatch={onHatch} />
           </div>
-          <div className="mt-4 grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-6">
+          <div className="mt-4 grid grid-cols-1 gap-6 @[1100px]:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
             <FitChart predictions={predictions} />
             <SystemsForecast predictions={predictions} />
           </div>

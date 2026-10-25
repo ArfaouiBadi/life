@@ -97,7 +97,15 @@ export function ageWords(ms: number) {
   return `${Math.floor(s / 3600)} h ${pad((s % 3600) / 60)} min`;
 }
 
-export const fillTemplate = (text: string, vars: { room?: string | null; eta?: number | null }) =>
-  text.replaceAll("{room}", vars.room ?? "the room").replaceAll("{eta}", vars.eta != null ? String(Math.max(1, Math.round(vars.eta / 60))) : "a few");
+export function fillTemplate(text: string, vars: { room?: string | null; eta?: number | null }) {
+  const n = vars.eta != null ? Math.max(1, Math.round(vars.eta / 60)) : null;
+  return text
+    .replaceAll("{room}", vars.room ?? "the room")
+    .replaceAll("{eta} minutes", n === null ? "a few minutes" : `${n} ${n === 1 ? "minute" : "minutes"}`)
+    .replaceAll("{eta}", n === null ? "a few" : String(n));
+}
 
 export const firstName = (name: string) => name.split(" ")[0];
+
+/** "Bedroom 2" stays a name; "Living room" becomes "the living room". */
+export const roomPhrase = (name: string) => (/\d/.test(name) ? name : `the ${name.toLowerCase()}`);

@@ -27,6 +27,10 @@ interface UiState {
   shortcutsOpen: boolean;
   focusedIncidentId: number | null;
   focusSettlement: string | null;
+  phoneDock: boolean;
+  beatMode: boolean;
+  setPhoneDock: (v: boolean) => void;
+  setBeatMode: (v: boolean) => void;
   setFocusSettlement: (code: string | null) => void;
   toggleMute: () => void;
   togglePresentation: () => void;
@@ -51,6 +55,10 @@ export const useUiStore = create<UiState>((set, get) => ({
   shortcutsOpen: false,
   focusedIncidentId: null,
   focusSettlement: null,
+  phoneDock: false,
+  beatMode: false,
+  setPhoneDock: (phoneDock) => set({ phoneDock }),
+  setBeatMode: (beatMode) => set({ beatMode }),
   setFocusSettlement: (focusSettlement) => set({ focusSettlement }),
   toggleMute: () => {
     const muted = !get().muted;
@@ -61,7 +69,7 @@ export const useUiStore = create<UiState>((set, get) => ({
   togglePresentation: () => {
     const presentation = !get().presentation;
     document.documentElement.style.zoom = presentation ? "1.12" : "";
-    set({ presentation, incidentColumnOpen: presentation ? true : get().incidentColumnOpen });
+    set({ presentation, beatMode: presentation || get().beatMode, incidentColumnOpen: presentation ? true : get().incidentColumnOpen });
   },
   setIncidentColumn: (incidentColumnOpen) => set({ incidentColumnOpen }),
   setSeverityFilter: (severityFilter) => set({ severityFilter }),

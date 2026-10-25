@@ -328,6 +328,7 @@ export function createIncident(
       actor: "System",
       homeAutopilot: false,
       autoRunTick: w.tick + autoRunAfter,
+      autoRunSpeed: w.speed,
       stepStartedAt: w.t,
       watchSince: null,
     };

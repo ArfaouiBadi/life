@@ -8,13 +8,15 @@ import { useOpsShortcuts } from "@/hooks/useOpsShortcuts";
 import { CommandPalette } from "@/features/command/CommandPalette";
 import { ShortcutsDialog } from "@/features/command/ShortcutsDialog";
 import { DemoDirector } from "@/features/demo/DemoDirector";
+import { PhoneDock } from "@/features/resident/PhoneDock";
 
 /** Map full bleed; chrome docked to the edges: top strip, left rail, incident column. */
 export function OpsLayout() {
   const columnOpen = useUiStore((s) => s.incidentColumnOpen);
+  const phoneDock = useUiStore((s) => s.phoneDock);
   useOpsShortcuts();
   return (
-    <div className="grid h-dvh overflow-hidden bg-twilight text-glass" style={{ gridTemplateColumns: `56px minmax(0,1fr) ${columnOpen ? "360px" : "44px"}` }}>
+    <div className="grid h-dvh overflow-hidden bg-twilight text-glass" style={{ gridTemplateColumns: `56px minmax(0,1fr) ${phoneDock ? "350px " : ""}${columnOpen ? "360px" : "44px"}` }}>
       <LeftRail />
       <div className="relative flex min-w-0 flex-col">
         <TopStrip />
@@ -23,6 +25,7 @@ export function OpsLayout() {
           <Outlet />
         </main>
       </div>
+      {phoneDock && <PhoneDock />}
       <IncidentColumn />
       <CommandPalette />
       <ShortcutsDialog />

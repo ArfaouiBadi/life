@@ -9,6 +9,8 @@ import { estimateLeakAreaCm2, fitExpDecay, fitLinear, linearSecondsTo, onsetInde
 
 export const FIT_WINDOW_S = 600;
 export const HEADLINE_HORIZON_S = 48 * 3600;
+export const MIN_LINEAR_SPAN_S = 120;
+export const MIN_DECAY_SPAN_S = 20;
 
 export interface ZoneFit {
   zone: Zone;
@@ -54,7 +56,8 @@ export function fitZones(home: SimHome, w: World, acoustic: Map<Id, number>, ful
     if (moving || full) {
       const all = zoneSamples(home, zone, w.t);
       samples = all.slice(onsetIndex(all.map((x) => x.p), NOISE.pressure));
-      if (moving) fit = fitExpDecay(samples.map((s) => ({ t: s.t, v: s.p })));
+      const span = samples.length ? samples[samples.length - 1].t - samples[0].t : 0;
+      if (moving && span >= MIN_DECAY_SPAN_S) fit = fitExpDecay(samples.map((s) => ({ t: s.t, v: s.p })));
     }
     let leakRoomId: Id | null = null;
     let loudest = 0.5;
@@ -153,6 +156,8 @@ export function computePredictions(home: SimHome, w: World, fits: ZoneFit[], ful
     const linear = (metric: MetricKey, key: "co2" | "smoke" | "dose", threshold: number, show: boolean) => {
       if (!show) return;
       const pts = f.samples.map((s) => ({ t: s.t, v: s[key] }));
+      // A slope from a few seconds of noisy samples means nothing; wait for two minutes of data.
+      if (pts.length < 8 || pts[pts.length - 1].t - pts[0].t < MIN_LINEAR_SPAN_S) return;
       const fit = fitLinear(pts);
       if (!fit) return;
       const current = tail(f.samples, key);

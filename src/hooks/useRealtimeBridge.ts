@@ -6,6 +6,17 @@ import type { Alert, Dispatch, FleetStatusMessage, FleetSummary, Incident, Incid
 import { useFleetStore } from "@/stores/fleetStore";
 import { useIncidentStore } from "@/stores/incidentStore";
 import { queryClient } from "@/app/queryClient";
+import { useTelemetryStore } from "@/stores/telemetryStore";
+
+/** After the simulation is reset (Demo Director), drop everything cached from the old world and reload. */
+export async function reseedClientState() {
+  useIncidentStore.setState({ incidents: {}, events: {}, alerts: {}, runs: {}, dispatches: {}, regional: {}, backlog: [] });
+  useTelemetryStore.setState({ latest: {}, predictions: {}, series: {} });
+  await queryClient.invalidateQueries();
+  const [incidents, alerts, regional, summary] = await Promise.all([api.listIncidents({}), api.listAlerts({ open: true, size: 500 }), api.listRegionalEvents(), api.getFleetSummary()]);
+  useIncidentStore.getState().seed({ incidents, alerts: alerts.content, regional });
+  useFleetStore.getState().setSummary(summary);
+}
 
 /** Seeds the stores once, then keeps them current from the global topics. Mounted once at the root. */
 export function useRealtimeBridge() {

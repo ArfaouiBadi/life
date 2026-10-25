@@ -201,6 +201,7 @@ export interface SimRun extends PlaybookRun {
   actor: string; // who started it
   homeAutopilot: boolean;
   autoRunTick: number | null;
+  autoRunSpeed: number; // speed autoRunAt was computed at
   stepStartedAt: number; // sim second current step began
   watchSince: number | null;
 }

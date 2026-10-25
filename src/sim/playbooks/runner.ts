@@ -471,6 +471,12 @@ export function stepRuns(w: World, ox: Outbox, rng: Rng) {
       else addEvent(w, inc, "AUTOPILOT", "Autopilot", "No operator response in 60 s. Home autopilot took over.", ox);
     }
 
+    // autoRunAt is a sim instant; keep it honest when the demo changes speed.
+    if (run.status === "PENDING" && run.autoRunTick !== null && run.autoRunSpeed !== w.speed) {
+      run.autoRunSpeed = w.speed;
+      run.autoRunAt = isoAt(w, w.t + (run.autoRunTick - w.tick) * w.speed);
+      ox.runs.push(runDto(run));
+    }
     // Control-room auto-run after autoRunAfterSec real seconds without acknowledgement.
     if (run.status === "PENDING" && run.autoRunTick !== null && w.tick >= run.autoRunTick && !inc.acknowledgedAt && !uplinkDown) {
       const pb = playbookByCode(run.playbookCode);

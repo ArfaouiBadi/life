@@ -75,10 +75,12 @@ export function evaluateHome(home: SimHome, w: World, fits: ZoneFit[], preds: Pr
       const o2 = pred("PPO2_KPA", first);
       let sev: Severity = confirmed ? "CRITICAL" : "WARNING";
       sev = escalate(sev, o2?.secondsToThreshold ?? null);
+      // A fire burns oxygen too; without a hissing hole, the falling pressure belongs to the fire.
+      const fireDriven = !confirmed && (!!fire || last.smoke > 10);
       out.push({
         key: `PRESSURE:${r.id}`,
         rule: "PRESSURE_FALLING",
-        cause: "PRESSURE_LOSS",
+        cause: fireDriven ? "FIRE" : "PRESSURE_LOSS",
         roomId: r.id,
         metric: "PRESSURE_KPA",
         sev,

@@ -39,18 +39,17 @@ export function SkyBand({ lmst, children }: { lmst: number; children?: React.Rea
   return (
     <div className="relative overflow-hidden" style={{ background: `linear-gradient(${top}, ${horizon})` }}>
       <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-        {night &&
-          [12, 27, 41, 58, 66, 79, 88, 20, 51, 73].map((x, i) => <circle key={i} cx={x} cy={(i * 37) % 60 + 6} r={0.35} fill="#DCEFF5" opacity={0.7} />)}
-        {sunUp && (
-          <>
-            <circle cx={sx} cy={sy} r={9} fill="#DCEFF5" opacity={0.18} />
-            <circle cx={sx} cy={sy} r={2.6} fill="#F4F7F8" opacity={0.95} />
-          </>
-        )}
         {/* Dome on the horizon */}
         <path d="M0,100 L0,90 Q20,84 40,89 T100,86 L100,100Z" fill="#B47A45" opacity={night ? 0.25 : 0.55} />
         <path d="M62,90 A12,9 0 0 1 86,90" fill="none" stroke="#DCEFF5" strokeWidth={0.5} opacity={0.8} vectorEffect="non-scaling-stroke" />
       </svg>
+      {night &&
+        [12, 27, 41, 58, 66, 79, 88, 20, 51, 73].map((x, i) => (
+          <span key={i} aria-hidden className="absolute size-[2px] rounded-full bg-glass/70" style={{ left: `${x}%`, top: `${((i * 37) % 60) + 6}%` }} />
+        ))}
+      {sunUp && (
+        <span aria-hidden className="absolute size-14 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ left: `${sx}%`, top: `${sy}%`, background: "radial-gradient(circle, #F4F7F8 0 16%, rgba(220,239,245,.22) 17% 55%, transparent 56%)" }} />
+      )}
       <div className="relative">{children}</div>
     </div>
   );

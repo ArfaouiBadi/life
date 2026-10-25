@@ -173,7 +173,12 @@ function BlackBox({
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={rows} margin={{ top: 8, right: 12, bottom: 0, left: -12 }}>
               <CartesianGrid stroke="var(--color-hairline)" strokeDasharray="2 4" vertical={false} />
-              <XAxis dataKey="t" type="number" domain={["dataMin", "dataMax"]} tickFormatter={(t: number) => localClock(new Date(t).toISOString(), lon)} tick={{ fill: "var(--color-mist)", fontSize: 11 }} stroke="var(--color-hairline)" />
+              <XAxis
+                dataKey="t"
+                type="number"
+                domain={["dataMin", "dataMax"]}
+                ticks={Array.from({ length: 6 }, (_, i) => rows[0].t + ((rows[rows.length - 1].t - rows[0].t) * i) / 5)}
+                tickFormatter={(t: number) => localClock(new Date(t).toISOString(), lon)} tick={{ fill: "var(--color-mist)", fontSize: 11 }} stroke="var(--color-hairline)" />
               <YAxis domain={[(dataMin: number) => Math.min(15.5, Math.floor(dataMin)), 21.6]} tick={{ fill: "var(--color-mist)", fontSize: 11 }} stroke="var(--color-hairline)" tickFormatter={(v: number) => v.toFixed(0)} width={40} />
               <ChartTooltip
                 contentStyle={{ background: "#172742", border: "1px solid #2C4366", borderRadius: 4, color: "#DCEFF5" }}

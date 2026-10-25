@@ -7,6 +7,8 @@ import { useFleetStore } from "@/stores/fleetStore";
 import { useIncidentStore } from "@/stores/incidentStore";
 import { queryClient } from "@/app/queryClient";
 import { useTelemetryStore } from "@/stores/telemetryStore";
+import { localClock } from "@/lib/localTime";
+import type { Directory } from "./useDirectory";
 
 /** After the simulation is reset (Demo Director), drop everything cached from the old world and reload. */
 export async function reseedClientState() {
@@ -60,11 +62,31 @@ export function useRealtimeBridge() {
             const evs = Object.values(useIncidentStore.getState().events)
               .flat()
               .filter((e) => Date.parse(e.ts) >= since && (e.actor === "Autopilot" || e.kind === "DETECTED"));
-            if (evs.length)
-              toast("While the uplink was down", {
-                description: evs.slice(-4).map((e) => `${e.text} (${new Date(e.ts).toISOString().slice(11, 16)} UTC)`).join("\n"),
-                duration: 12000,
-              });
+            if (!evs.length) return;
+            // Times in the home's own local time: "Hatch sealed at 03:14, automatically."
+            const dir = queryClient.getQueryData<Directory>(["directory"]);
+            const incs = useIncidentStore.getState().incidents;
+            const lonOf = (incidentId: number) => {
+              const homeId = incs[incidentId]?.homeId;
+              return homeId != null ? dir?.homeById.get(homeId)?.settlement.lon : undefined;
+            };
+            toast("While the uplink was down", {
+              description: (
+                <ul className="mt-1 space-y-0.5">
+                  {evs.slice(-5).map((e) => {
+                    const lon = lonOf(e.incidentId);
+                    return (
+                      <li key={e.id}>
+                        {e.text.replace(/\.$/, "")}
+                        {lon !== undefined ? ` at ${localClock(e.ts, lon)}` : ""}
+                        {e.actor === "Autopilot" ? ", automatically" : ""}.
+                      </li>
+                    );
+                  })}
+                </ul>
+              ),
+              duration: 15000,
+            });
           }, 50);
         }
       }),

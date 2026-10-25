@@ -102,5 +102,16 @@ CD = 0.61 (discharge coefficient), Γ = 0.5787 (choked-flow factor for air), √
 - Full telemetry is only published for homes someone is looking at (open twin, resident app, open incidents), at most 20. Everyone else gets a compact status every 2 s. The real backend must scale the same way.
 - One tick for 480 homes takes ~3.8 ms at 1× speed. The trick: a quiet home (every reading comfortably inside its limits) skips the rule engine that tick.
 
-## 10. Why each library is there
-(Filled in as the UI lands; see CREDITS.md for licenses.)
+## 10. The screens and how they get their data
+
+- **Two kinds of data.** Things that are asked for once (settlements, a home's floor plan, an incident's history) go through TanStack Query, which caches them. Things that change every second (fleet status, a home's telemetry, incidents, playbook steps, rover positions) arrive as topic messages and land in Zustand stores. A component reads only the slice it needs, so a tick re-renders the few things that changed, not the whole map.
+- **Only watched homes stream full telemetry.** Opening a twin or the resident app subscribes to `/topic/homes/{id}/telemetry`; the engine sees the subscription and starts publishing that home every tick. Everyone else gets a compact status every 2 s.
+- **The map** is one continuous move: a canvas globe (d3-geo orthographic projection) that rotates and zooms toward a settlement, hands over to an SVG settlement map, and d3-zoom flies the camera into a dome and onto a house (smooth zoom interpolation). Terrain contours are computed once from a procedural elevation model shaped like the real places (Jezero's crater and delta, Mount Sharp's flank, Cerberus Fossae).
+- **The twin** draws the live floor plan. Airflow arrows are found by walking open hatches from the leaking room outward; when the hatch is sealed, the rest of the house drops out of that walk and its arrows stop.
+- **The resident app** turns the playbook state into one instruction per person, based on which room each person is in.
+- **The Demo Director** (mock mode only, Shift D) is the one screen allowed to call `api.sim.*`: beats for the pitch, scenarios, speed, local time, reset.
+- **Offline behaviour.** If the uplink drops, the console freezes on the last known state and shows how long it has been blind. The homes keep simulating and their autopilots act; on reconnect the backlog replays and a summary says what happened ("Hatch sealed at 03:14, automatically").
+
+## 11. Why each library is there
+
+See [CREDITS.md](CREDITS.md) for every package, its license and its job. In short: React for the UI, React Router for the URL-driven map levels, TanStack Query and Zustand for data, d3 for map math and camera flights, simplex-noise for procedural terrain, Recharts for charts, Motion for small action feedback, shadcn/ui (Radix) for accessible dialogs, menus and the command palette, Tailwind for styling with design tokens, Vitest for the physics tests.

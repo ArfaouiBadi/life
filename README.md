@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# Life
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Round-the-clock life-safety monitoring for family homes on Mars. Other alarms tell you something is wrong; Life tells you how much time you have.
 
-Currently, two official plugins are available:
+This is the React frontend, running on a live in-browser simulation of 480 homes in five settlements. A Spring Boot + MySQL backend can replace the simulation later through the same two interfaces (`HabitatApi`, `RealtimeClient`) without a UI rewrite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open http://localhost:5173. Useful URLs:
+
+| URL | What |
+|---|---|
+| `/` | Landing page |
+| `/login` | Choose a demo identity (operator, supervisor, homeowner, technician, admin) |
+| `/demo` | Pitch view: control room plus the family's phone, beats on the Space bar |
+| `?seed=2061` | Same seed, same world |
+| `?source=mock` | Force the simulation, even if configured for the backend |
+
+## The pitch in three beats
+
+Open `/demo`, press **P** for presentation mode if projecting, then **Space** for each beat (or **Shift D** for the Demo Director):
+
+1. **The descent**: a fresh world at 03:10 in New Jezero, one camera move from the planet to the Trabelsi home.
+2. **The countdown**: a micrometeorite punctures Bedroom 2. "Unsafe air in 1:47", with the physics beside it.
+3. **The save**: Youssef leaves, the hatch seals, the countdown turns to "Stable", each person's phone says what to do.
+
+Then **Help arrives** (the rover crosses the settlement) and **Safe again**.
+
+## Checks
+
+```bash
+npm run typecheck
+npm run lint
+npm run test
+npm run build
+```
+
+## Docs
+
+- [How it works](docs/HOW_IT_WORKS.md): architecture, simulation math, prediction model. Read this before the Q&A.
+- [Decisions](docs/DECISIONS.md): every call the plan left open.
+- [API contract](docs/API_CONTRACT.md): the shapes the backend must serve.
+- [Credits](docs/CREDITS.md): every library and its license.
+
+The "Simulated telemetry" badge is always visible in mock mode. No real sensors are connected.

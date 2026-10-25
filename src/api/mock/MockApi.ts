@@ -150,7 +150,7 @@ export class MockApi implements HabitatApi {
   getIncidentByCode(code: string) {
     return this.read<IncidentBundle>(() => {
       const inc = this.w.incidents.find((i) => i.code === code.toUpperCase());
-      if (!inc) throw new HttpError(404, `No incident ${code}`);
+      if (!inc) throw new HttpError(404, `There's no incident ${code}. Reloading restarts the simulation, so older incident links stop working.`);
       const run = this.w.runs.find((r) => r.id === inc.runId);
       const d = this.w.dispatches.find((x) => x.incidentId === inc.id);
       return {

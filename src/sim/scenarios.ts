@@ -56,7 +56,8 @@ export function injectScenario(w: World, req: ScenarioRequest, ox: Outbox) {
       const s = w.settlements.find((x) => x.id === req.settlementId) ?? w.settlements.find((x) => x.code === "ARC")!;
       const tau = Math.min(6, Math.max(1, req.intensity ?? 4));
       const dur = req.durationSec ?? SOL_S;
-      // Replaces any lighter dust event over the same settlement.
+      // Replaces any lighter dust event over the same settlement (and tells subscribers it ended).
+      for (const e of w.regionalEvents.filter((e) => e.kind === "DUST_STORM" && e.settlementIds.includes(s.id))) ox.regional.push({ ...regionalDto(e), intensity: 0 });
       w.regionalEvents = w.regionalEvents.filter((e) => !(e.kind === "DUST_STORM" && e.settlementIds.includes(s.id)));
       addRegional(w, ox, {
         kind: "DUST_STORM",

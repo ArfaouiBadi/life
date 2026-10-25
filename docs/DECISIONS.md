@@ -32,3 +32,18 @@ One line per call the plan left open, or where the plan had to bend. Newest at t
 - The world has 480 homes with seed 2061 (the plan says "about 450"). The login note reads the real number from the simulation.
 - Telemetry noise for the UI comes from its own seeded RNG, so opening a home's twin never changes the world.
 - Mock reads clone their results (`structuredClone`) so the UI can never mutate simulation state by accident.
+
+## Interface
+- Detection also requires a minimum span of samples: 20 s for the decay fit, 2 minutes for straight-line fits. Right after a clock jump, a handful of noisy samples could otherwise produce a fake countdown.
+- A pressure drop with no hissing hole in a zone that has smoke or fire is grouped into the FIRE incident (the fire is burning the oxygen), not a separate PRESSURE_LOSS.
+- Map callouts at settlement zoom are only for critical and emergency homes; warnings show on the tile (a dust storm can put a hundred homes on warning).
+- The critical banner is docked under the top strip rather than floating over the map, and is hidden on the affected home's own twin (which has the same controls).
+- The pitch view (`/demo`) is the operator console with the family's phone docked beside it, in the same app and the same simulation. An iframe would have run a second, different world.
+- The pitch view collapses the incident column so the map, twin and phone fit a 1280 × 720 projector.
+- The Demo Director is a non-modal side panel without an overlay, so the console stays visible and live while beats run.
+- The "Starts automatically in" countdown is recomputed by the engine when the demo changes speed (the auto-run deadline is in real seconds; `autoRunAt` is a sim instant).
+- Reloading the page restarts the simulation (the world lives in the browser). The session survives in sessionStorage; incident links from before the reload say so plainly.
+- Technician status changes and admin onboarding are client-side only: the contract has no endpoints for them yet. Both say what will happen once the backend exists.
+- Prices are shown in "credits" (a Mars currency is fiction either way, and a dollar sign would read as Earth).
+- The resident emergency header uses darker versions of the critical and emergency colors (#C2361D, #B0103D) so white text meets contrast on a light phone screen.
+- Map tiles and twin people are focusable; arrow keys move between hex tiles in a dome, Enter opens the home.

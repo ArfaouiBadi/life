@@ -215,7 +215,8 @@ function SettlementMap({
   const solarStorm = Object.values(regional).find((e) => e.kind === "SOLAR_PARTICLE_EVENT" && e.settlementIds.includes(settlement.id));
   const myDispatches = Object.values(dispatches).filter((d) => d.settlementId === settlement.id && d.status !== "DONE");
 
-  // Loud homes get a callout at settlement zoom, so the one problem among hundreds can't be missed.
+  // Critical homes get a callout at settlement zoom, so the one problem among hundreds can't be missed.
+  // Warnings show on the tile only (a dust storm can put a hundred homes on warning).
   const loudHomes = useMemo(() => {
     const out: { home: HomeSummary; dome: Dome; sev: Severity; ttd: number | null; x: number; y: number }[] = [];
     for (const d of domes) {
@@ -223,7 +224,7 @@ function SettlementMap({
       for (const h of homesByDome.get(d.id) ?? []) {
         const live = status[h.id];
         const sev = live?.severity ?? h.severity;
-        if (sevRank(sev) < sevRank("WARNING")) continue;
+        if (sevRank(sev) < sevRank("CRITICAL")) continue;
         const [x, y] = hexToPixel({ q: h.hexQ, r: h.hexR }, s);
         out.push({ home: h, dome: d, sev, ttd: live?.ttdSeconds ?? null, x: d.centerX + x, y: d.centerY + y });
       }

@@ -14,9 +14,13 @@ import { PhoneDock } from "@/features/resident/PhoneDock";
 export function OpsLayout() {
   const columnOpen = useUiStore((s) => s.incidentColumnOpen);
   const phoneDock = useUiStore((s) => s.phoneDock);
+  const presentation = useUiStore((s) => s.presentation);
   useOpsShortcuts();
   return (
-    <div className="grid h-dvh overflow-hidden bg-twilight text-glass" style={{ gridTemplateColumns: `56px minmax(0,1fr) ${phoneDock ? "350px " : ""}${columnOpen ? "360px" : "44px"}` }}>
+    <div
+      className="grid overflow-hidden bg-twilight text-glass"
+      // CSS zoom (presentation mode) scales heights too, so divide the viewport back out.
+      style={{ height: presentation ? "calc(100dvh / 1.12)" : "100dvh", gridTemplateColumns: `56px minmax(0,1fr) ${phoneDock ? "350px " : ""}${columnOpen ? "360px" : "44px"}` }}>
       <LeftRail />
       <div className="relative flex min-w-0 flex-col">
         <TopStrip />

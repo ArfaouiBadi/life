@@ -132,6 +132,17 @@
 }
 .alarm-pulse { animation: alarm-pulse 1.6s var(--ease-emphasized) infinite; }
 
+@keyframes dust-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(400px); }
+}
+.dust-drift { animation: dust-drift 40s linear infinite alternate; }
+
+@keyframes flow-dash {
+  to { stroke-dashoffset: -26; }
+}
+.flow-dash { animation: flow-dash 0.9s linear infinite; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   .alarm-pulse { animation: none; opacity: 0.6; }

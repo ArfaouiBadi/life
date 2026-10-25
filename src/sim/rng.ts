@@ -1,13 +1,6 @@
 export type Rng = () => number;
 
-export function mulberry32(seed: number): Rng {
-  return function next() {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+export { mulberry32 } from "@/lib/mulberry32";
 
 export const range = (rng: Rng, min: number, max: number) => min + (max - min) * rng();
 export const int = (rng: Rng, min: number, max: number) => Math.floor(range(rng, min, max + 1));

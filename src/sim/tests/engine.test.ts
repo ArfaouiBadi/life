@@ -18,6 +18,13 @@ describe("world generation", () => {
     expect(a.domes.map((d) => d.centerX)).toEqual(b.domes.map((d) => d.centerX));
   });
 
+  it("is the same world whatever time it is opened", () => {
+    const night = generateWorld(2061, EPOCH);
+    const day = generateWorld(2061, EPOCH + 12 * 3600_000);
+    const sig = (w: typeof night) => w.homes.map((h) => `${h.code}:${h.householdName}:${h.template}:${h.occupants.length}`);
+    expect(sig(day)).toEqual(sig(night));
+  });
+
   it("has exactly 452 homes, about 1,400 residents and the hero home", () => {
     const w = generateWorld(2061, EPOCH);
     expect(w.homes.length).toBe(452);

@@ -43,6 +43,9 @@ export function generateWorld(seed: number, epochMs: number): World {
   };
 
   const domeSizes = planDomeSizes(seed);
+  // Where people start depends on the clock (asleep at night), so it draws from its own stream:
+  // the same seed builds the same world whatever time the app is opened.
+  const placeRng = mulberry32(seed ^ 0x2be);
   let domeIndex = 0;
 
   for (const def of SETTLEMENTS) {
@@ -91,7 +94,7 @@ export function generateWorld(seed: number, epochMs: number): World {
       const slots = hexSpiral(n + 1);
       for (let i = 1; i <= n; i++) {
         const hero = isHeroDome && i === HERO.homeIndex;
-        const home = createHome(w, rng, s, d, i, slots[i].q, slots[i].r, hero);
+        const home = createHome(w, rng, placeRng, s, d, i, slots[i].q, slots[i].r, hero);
         d.homeIds.push(home.id);
         w.homes.push(home);
         w.homeById.set(home.id, home);
@@ -245,6 +248,7 @@ const EQUIPMENT: { type: EquipmentType; name: string; inLifeSupport: boolean }[]
 function createHome(
   w: World,
   rng: Rng,
+  placeRng: Rng,
   s: SimSettlement,
   d: SimDome,
   index: number,
@@ -341,9 +345,9 @@ function createHome(
 
   const lmst = lmstAt(w.epochMs, s.lon);
   for (const o of occupants) {
-    const room = isNight(lmst) ? rooms.find((x) => x.id === o.bedRoomId)! : pick(rng, rooms.filter((x) => x.type !== "AIRLOCK"));
-    placeIn(rng, o, room);
-    o.nextMoveAt = range(rng, 60, 2400);
+    const room = isNight(lmst) ? rooms.find((x) => x.id === o.bedRoomId)! : pick(placeRng, rooms.filter((x) => x.type !== "AIRLOCK"));
+    placeIn(placeRng, o, room);
+    o.nextMoveAt = range(placeRng, 60, 2400);
   }
 
   const family = template === "FAMILY";

@@ -31,12 +31,12 @@ export const BEATS: Beat[] = [
   {
     id: "descent",
     title: "The descent",
-    says: "A fresh world at 03:10 in New Jezero, then one camera move from the planet down to the Trabelsi home.",
+    says: "A fresh world at 03:07 in New Jezero, then one camera move from the planet down to the Trabelsi home.",
     run: async (navigate) => {
       await api.sim.reset(2061);
       await reseedClientState();
       const jzr = dir()?.settlements.find((s) => s.code === "JZR") ?? (await api.getSettlementByCode("JZR"));
-      await api.sim.setLocalTime(jzr.id, 3 + 10 / 60);
+      await api.sim.setLocalTime(jzr.id, 3 + 7 / 60); // the film's clock
       await api.sim.setSpeed(1);
       navigate("/ops/map", { state: { descend: ["JZR", "AUR", HERO] } });
     },

@@ -2,7 +2,7 @@
 
 Round-the-clock life-safety monitoring for family homes on Mars. Other alarms tell you something is wrong; Life tells you how much time you have.
 
-This is the React frontend, running on a live in-browser simulation of 480 homes in five settlements. A Spring Boot + MySQL backend can replace the simulation later through the same two interfaces (`HabitatApi`, `RealtimeClient`) without a UI rewrite.
+This is the React frontend, running on a live in-browser simulation of 452 homes in five settlements. A Spring Boot + MySQL backend can replace the simulation later through the same two interfaces (`HabitatApi`, `RealtimeClient`) without a UI rewrite.
 
 ## Run it
 
@@ -25,7 +25,7 @@ Open http://localhost:5173. Useful URLs:
 
 Open `/demo`, press **P** for presentation mode if projecting, then **Space** for each beat (or **Shift D** for the Demo Director):
 
-1. **The descent**: a fresh world at 03:10 in New Jezero, one camera move from the planet to the Trabelsi home.
+1. **The descent**: a fresh world at 03:07 in New Jezero, one camera move from the planet to the Trabelsi home.
 2. **The countdown**: a micrometeorite punctures Bedroom 2. "Unsafe air in 1:47", with the physics beside it.
 3. **The save**: Youssef leaves, the hatch seals, the countdown turns to "Stable", each person's phone says what to do.
 

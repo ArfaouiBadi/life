@@ -63,6 +63,9 @@ export const SETTLEMENTS: SettlementDef[] = [
   },
 ];
 
+/** The fleet size the pitch and the launch film use. */
+export const TOTAL_HOMES = 452;
+
 export const FRAME_W = 4000;
 export const FRAME_H = 2600;
 

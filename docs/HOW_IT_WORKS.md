@@ -23,7 +23,7 @@ React screens ──hooks──► TanStack Query (reads)      Zustand stores (l
 ## 2. The simulated world
 
 - Seeded random numbers (mulberry32). Same seed, same world: default seed 2061, change it with `?seed=`. `Math.random()` is only used for visual effects.
-- 5 real Mars locations (Jezero Crater, Utopia Planitia, Arcadia Planitia, Gale Crater, Elysium Planitia), 17 domes, 480 homes, about 1,500 people.
+- 5 real Mars locations (Jezero Crater, Utopia Planitia, Arcadia Planitia, Gale Crater, Elysium Planitia), 17 domes, exactly 452 homes, about 1,400 people.
 - Each settlement has a 4,000 × 2,600 m map frame. Domes are placed randomly but at least 220 m apart; pressurised tunnels join them along a minimum spanning tree plus one extra edge, so there's one loop (a tunnel can fail without cutting a dome off).
 - Homes sit on a hex grid inside each dome; hex 0 is the dome's life-support core.
 - Two floor plans: FAMILY (16 × 10 m, 416 m³ of connected air) and POD (10 × 6 m, 156 m³). Volume = floor area × 2.6 m ceiling.
@@ -100,7 +100,7 @@ CD = 0.61 (discharge coefficient), Γ = 0.5787 (choked-flow factor for air), √
 ## 9. Performance and scale
 
 - Full telemetry is only published for homes someone is looking at (open twin, resident app, open incidents), at most 20. Everyone else gets a compact status every 2 s. The real backend must scale the same way.
-- One tick for 480 homes takes ~3.8 ms at 1× speed. The trick: a quiet home (every reading comfortably inside its limits) skips the rule engine that tick.
+- One tick for the whole fleet takes under 4 ms at 1× speed. The trick: a quiet home (every reading comfortably inside its limits) skips the rule engine that tick.
 
 ## 10. The screens and how they get their data
 

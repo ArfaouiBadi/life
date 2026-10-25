@@ -18,12 +18,13 @@ describe("world generation", () => {
     expect(a.domes.map((d) => d.centerX)).toEqual(b.domes.map((d) => d.centerX));
   });
 
-  it("has about 450 homes, 1,400 residents and the hero home", () => {
+  it("has exactly 452 homes, about 1,400 residents and the hero home", () => {
     const w = generateWorld(2061, EPOCH);
-    expect(w.homes.length).toBeGreaterThan(380);
-    expect(w.homes.length).toBeLessThan(560);
+    expect(w.homes.length).toBe(452);
+    expect(generateWorld(7, EPOCH).homes.length).toBe(452);
     const residents = w.homes.reduce((a, h) => a + h.occupants.length, 0);
-    expect(residents).toBeGreaterThan(1100);
+    expect(residents).toBeGreaterThan(1300);
+    expect(residents).toBeLessThan(1500);
     const hero = w.homeByCode.get("JZR-AUR-014")!;
     expect(hero.householdName).toBe("Trabelsi family");
     expect(hero.template).toBe("FAMILY");

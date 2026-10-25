@@ -126,7 +126,7 @@ export function DemoDirector() {
 function LocalTime() {
   const { data: dir } = useDirectory();
   const [sid, setSid] = useState<string>("");
-  const [time, setTime] = useState("03:10");
+  const [time, setTime] = useState("03:07");
   const settlementId = sid || String(dir?.settlements[0]?.id ?? "");
   return (
     <section>

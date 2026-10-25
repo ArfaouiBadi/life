@@ -5,7 +5,7 @@ import { chance, int, mulberry32, pick, range, shuffle, type Rng } from "../rng"
 import { Ring } from "../ring";
 import { PHYS } from "../physics/constants";
 import { GIVEN, SURNAMES, initialsOf } from "./names";
-import { FRAME_H, FRAME_W, HERO, SETTLEMENTS } from "./settlements";
+import { FRAME_H, FRAME_W, HERO, SETTLEMENTS, TOTAL_HOMES } from "./settlements";
 import { TEMPLATES } from "./templates";
 import type { SimDome, SimEquipment, SimHome, SimOccupant, SimRoom, SimSettlement, World } from "./types";
 
@@ -41,6 +41,9 @@ export function generateWorld(seed: number, epochMs: number): World {
     homeById: new Map(),
     homeByCode: new Map(),
   };
+
+  const domeSizes = planDomeSizes(seed);
+  let domeIndex = 0;
 
   for (const def of SETTLEMENTS) {
     const s: SimSettlement = {
@@ -84,7 +87,7 @@ export function generateWorld(seed: number, epochMs: number): World {
 
     for (const d of myDomes) {
       const isHeroDome = def.code === HERO.settlement && d.name === HERO.dome;
-      const n = isHeroDome ? HERO.domeHomes : int(rng, 18, 36);
+      const n = domeSizes[domeIndex++];
       const slots = hexSpiral(n + 1);
       for (let i = 1; i <= n; i++) {
         const hero = isHeroDome && i === HERO.homeIndex;
@@ -99,6 +102,27 @@ export function generateWorld(seed: number, epochMs: number): World {
 
   applyBaseline(w, rng);
   return w;
+}
+
+/**
+ * Homes per dome (18 to 36, the hero dome exactly 30), nudged so the fleet totals exactly
+ * TOTAL_HOMES. Drawn from their own stream so dome placement doesn't depend on them.
+ */
+export function planDomeSizes(seed: number): number[] {
+  const rng = mulberry32(seed ^ 0x1c4);
+  const defs = SETTLEMENTS.flatMap((s) => s.domes.map((name) => s.code === HERO.settlement && name === HERO.dome));
+  const sizes = defs.map((hero) => (hero ? HERO.domeHomes : int(rng, 18, 36)));
+  const free = defs.map((hero, i) => (hero ? -1 : i)).filter((i) => i >= 0);
+  let diff = TOTAL_HOMES - sizes.reduce((a, b) => a + b, 0);
+  // Take from the largest domes or give to the smallest, one home at a time.
+  while (diff !== 0) {
+    const order = [...free].sort((a, b) => (diff > 0 ? sizes[a] - sizes[b] : sizes[b] - sizes[a]) || a - b);
+    const i = order.find((j) => (diff > 0 ? sizes[j] < 36 : sizes[j] > 18));
+    if (i === undefined) break;
+    sizes[i] += Math.sign(diff);
+    diff -= Math.sign(diff);
+  }
+  return sizes;
 }
 
 function placeDomes(rng: Rng, count: number, craterR: number | null) {

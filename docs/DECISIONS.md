@@ -28,8 +28,9 @@ One line per call the plan left open, or where the plan had to bend. Newest at t
 - Home autopilot (8.13) also takes over at CRITICAL when the uplink is down, not only at EMERGENCY: nobody can acknowledge, and a 1.5 cm² breach is CRITICAL, not EMERGENCY.
 - Control-room auto-run runs AUTO steps and stops at CONFIRM steps; only the home autopilot executes CONFIRM steps marked `autopilot: true` (and never seals a room with someone inside).
 - VERIFY in the breach playbook also waits until the sealed room is back within 1 kPa of nominal, then reopens its hatch.
-- Detection fast path: a home whose readings sit comfortably inside every limit skips the rule engine for that tick. This took a 480-home tick from 14.7 ms to 3.8 ms at 1×. At 300× the 30 sub-steps cost ~40 ms per tick, which is still 4% of the 1-second interval.
-- The world has 480 homes with seed 2061 (the plan says "about 450"). The login note reads the real number from the simulation.
+- Detection fast path: a home whose readings sit comfortably inside every limit skips the rule engine for that tick. This took a full-fleet tick (480 homes at the time) from 14.7 ms to 3.8 ms at 1×. At 300× the 30 sub-steps cost ~40 ms per tick, which is still 4% of the 1-second interval.
+- The fleet is exactly 452 homes (about 1,400 people), matching the plan's login note and the launch film. Dome sizes are drawn from their own seeded stream (18 to 36 homes, Aurora fixed at 30) and nudged one home at a time until they total 452, so Aurora and the Trabelsi home are unchanged.
+- The descent beat starts the night at 03:07, the same clock the launch film ends its night scene on.
 - Telemetry noise for the UI comes from its own seeded RNG, so opening a home's twin never changes the world.
 - Mock reads clone their results (`structuredClone`) so the UI can never mutate simulation state by accident.
 

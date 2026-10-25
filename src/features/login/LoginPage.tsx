@@ -69,7 +69,7 @@ export function LoginPage() {
           </ul>
           {isMock && (
             <p className="mt-6 max-w-[52ch] text-mist">
-              This demo runs on a simulation of {homes ? num(homes) : "about 480"} homes. No real sensors are connected.
+              This demo runs on a simulation of {homes ? num(homes) : "452"} homes. No real sensors are connected.
             </p>
           )}
         </div>

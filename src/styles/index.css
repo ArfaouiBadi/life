@@ -1,0 +1,138 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant resident (&:is(.theme-resident *));
+
+@theme {
+  --color-twilight: #0F1B2D;
+  --color-dusk: #172742;
+  --color-dusk-high: #213556;
+  --color-hairline: #2C4366;
+  --color-glass: #DCEFF5;
+  --color-mist: #8FA6C1;
+  --color-regolith: #C98B4E;
+  --color-advisory: #6EC6F0;
+  --color-warning: #FFB547;
+  --color-critical: #FF5A3D;
+  --color-emergency: #FF2E63;
+  --color-offline: #7D8CA3;
+  --color-res-ground: #EEF4F6;
+  --color-res-surface: #FFFFFF;
+  --color-res-ink: #13233A;
+  --color-res-muted: #5B6E86;
+  --color-sky-day: #E3A857;
+  --color-sky-dusk: #8FB3DC;
+  --font-sans: "Archivo Variable", "Archivo", system-ui, sans-serif;
+  --font-serif: "Newsreader Variable", "Newsreader", Georgia, serif;
+  --radius-instrument: 4px;
+  --radius-control: 6px;
+  --radius-sheet: 20px;
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* shadcn variables mapped onto our tokens */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 12px;
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;
+}
+
+:root {
+  --background: #0F1B2D;
+  --foreground: #DCEFF5;
+  --card: #172742;
+  --card-foreground: #DCEFF5;
+  --popover: #172742;
+  --popover-foreground: #DCEFF5;
+  --primary: #DCEFF5;
+  --primary-foreground: #0F1B2D;
+  --secondary: #213556;
+  --secondary-foreground: #DCEFF5;
+  --muted: #213556;
+  --muted-foreground: #8FA6C1;
+  --accent: #213556;
+  --accent-foreground: #DCEFF5;
+  --destructive: #FF5A3D;
+  --border: #2C4366;
+  --input: #2C4366;
+  --ring: #DCEFF5;
+  --radius: 6px;
+  color-scheme: dark;
+}
+
+.theme-resident {
+  --background: #EEF4F6;
+  --foreground: #13233A;
+  --card: #FFFFFF;
+  --card-foreground: #13233A;
+  --popover: #FFFFFF;
+  --popover-foreground: #13233A;
+  --primary: #13233A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #E2EAEE;
+  --secondary-foreground: #13233A;
+  --muted: #E2EAEE;
+  --muted-foreground: #5B6E86;
+  --accent: #E2EAEE;
+  --accent-foreground: #13233A;
+  --border: #D3DEE4;
+  --input: #D3DEE4;
+  --ring: #13233A;
+  color-scheme: light;
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { @apply font-sans; }
+  body {
+    @apply bg-background text-foreground;
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  button { cursor: pointer; }
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+.w-condensed { font-stretch: 80%; }
+.w-semi { font-stretch: 90%; }
+.w-expanded { font-stretch: 120%; }
+.serif-feature { font-family: var(--font-serif); font-style: italic; }
+
+@keyframes alarm-pulse {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.85; }
+}
+.alarm-pulse { animation: alarm-pulse 1.6s var(--ease-emphasized) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .alarm-pulse { animation: none; opacity: 0.6; }
+}

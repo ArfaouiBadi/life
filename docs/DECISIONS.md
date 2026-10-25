@@ -48,3 +48,17 @@ One line per call the plan left open, or where the plan had to bend. Newest at t
 - Prices are shown in "credits" (a Mars currency is fiction either way, and a dollar sign would read as Earth).
 - The resident emergency header uses darker versions of the critical and emergency colors (#C2361D, #B0103D) so white text meets contrast on a light phone screen.
 - Map tiles and twin people are focusable; arrow keys move between hex tiles in a dome, Enter opens the home.
+
+## Backend adapters
+- @stomp/stompjs is pinned to 7.3.0 (January 2026) rather than 7.5.0, which was 10 days old when phase 11 started.
+- The HTTP adapters load on demand like the mock ones, so the pitch bundle carries no STOMP client.
+- Startup check: `GET /api/settlements` before the first render. No answer, a 404 or a 5xx stops startup with "Life could not start" and the `?source=mock` link; 401 and 403 count as up. Without it, screens waiting on data would show "Loading" forever, and fixing that screen by screen would mean touching components.
+- Every REST call times out after 10 s. No HTTP answer at all becomes `HttpError(0, ...)`.
+- Error text is Spring's `message`, else a ProblemDetail's `detail`, else "GET /api/... failed (HTTP 502)". Spring Boot hides `message` by default: set `server.error.include-message=always` so operators read "Finish the earlier steps first", not a status code.
+- The token is read from sessionStorage (the key the session store writes) on every call, so the API layer doesn't import a UI store.
+- The sim endpoints are `POST /api/dev/sim/scenarios` (a `ScenarioRequest`), `/speed` `{ multiplier }`, `/local-time` `{ settlementId, lmstHours }` and `/reset` `{ seed? }`, now listed in API_CONTRACT.md.
+- Topics use a plain WebSocket at `/ws`, not SockJS: every target browser has WebSocket, and it is one less fallback to debug on stage.
+- One broker subscription per topic, fanned out in the client; all of them are sent again after every reconnect.
+- Reconnect backoff doubles from 1 s up to 30 s, with a 10 s connection timeout and stompjs's default 10 s heartbeats.
+- Status mapping: CONNECTING before every attempt, OPEN on STOMP CONNECTED, CLOSED when the socket closes (the console already treats CLOSED as "uplink down").
+- The `/ws` connection sends no credentials, because the contract doesn't say how topics are secured. If they are, the token goes in the STOMP CONNECT headers.

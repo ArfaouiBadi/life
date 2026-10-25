@@ -9,6 +9,7 @@ The frontend talks to exactly two interfaces: `HabitatApi` (REST-shaped reads an
 - Units are part of field names: `pressureKPa`, `co2Ppm`, `doseUSvH`.
 - Growing lists use Spring Data's `Page<T>` (VIA_DTO format: `content` plus `page { size, number, totalElements, totalPages }`).
 - Severity order: `NOMINAL < ADVISORY < WARNING < CRITICAL < EMERGENCY`. Offline is a `LinkState`, not a severity.
+- Auth: after sign-in, every REST call carries `Authorization: Bearer <token>` (the `token` from `POST /api/auth/login`).
 - Errors: HTTP status plus a message (`HttpError(status, message)` in the client). 404 for unknown codes, 409 for a command that isn't allowed right now (for example "Finish the earlier steps first").
 
 ## REST endpoints (proposed mapping for the backend)
@@ -39,9 +40,14 @@ The frontend talks to exactly two interfaces: `HabitatApi` (REST-shaped reads an
 | GET | /api/regional-events | `listRegionalEvents` |
 | GET | /api/work-orders | `listWorkOrders` |
 | GET | /api/subscriptions | `listSubscriptions` |
-| POST | /api/dev/sim/* | `sim.*` (dev profile only) |
+| POST | /api/dev/sim/scenarios `ScenarioRequest` | `sim.injectScenario` (dev profile only) |
+| POST | /api/dev/sim/speed `{ multiplier }` | `sim.setSpeed` (dev profile only) |
+| POST | /api/dev/sim/local-time `{ settlementId, lmstHours }` | `sim.setLocalTime` (dev profile only) |
+| POST | /api/dev/sim/reset `{ seed? }` | `sim.reset` (dev profile only) |
 
 ## Topics
+
+STOMP over a plain WebSocket at `/ws` (no SockJS); message bodies are JSON.
 
 | Topic | Payload | Rate |
 |---|---|---|

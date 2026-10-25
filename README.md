@@ -31,6 +31,16 @@ Open `/demo`, press **P** for presentation mode if projecting, then **Space** fo
 
 Then **Help arrives** (the rover crosses the settlement) and **Safe again**.
 
+## Run against the backend
+
+Start the Spring Boot backend on port 8080, then:
+
+```bash
+VITE_DATA_SOURCE=http npm run dev
+```
+
+On Windows, put `VITE_DATA_SOURCE=http` in `.env.local` instead. The dev server forwards `/api` and `/ws` to `localhost:8080`; set `VITE_API_BASE` and `VITE_WS_URL` to use another server. If the backend isn't answering, the page says so and links to `?source=mock` to run on the simulation instead. Details in [How it works](docs/HOW_IT_WORKS.md#12-switching-to-the-backend).
+
 ## Checks
 
 ```bash

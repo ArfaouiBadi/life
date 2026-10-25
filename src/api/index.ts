@@ -1,6 +1,5 @@
 import type { HabitatApi } from "./HabitatApi";
 import type { RealtimeClient } from "./RealtimeClient";
-import { createHttpAdapters } from "./http/HttpApi";
 
 export type DataSource = "mock" | "http";
 
@@ -26,16 +25,20 @@ async function createMockAdapters(): Promise<{ api: HabitatApi; realtime: Realti
   return { api, realtime };
 }
 
+// Both sides load lazily: the backend bundle has no simulation, the pitch bundle no STOMP client.
 export const adaptersReady: Promise<{ api: HabitatApi; realtime: RealtimeClient }> =
-  source === "http" ? Promise.resolve(createHttpAdapters()) : createMockAdapters();
+  source === "http" ? import("./http/HttpApi").then((m) => m.createHttpAdapters()) : createMockAdapters();
 
 /** Filled in once adaptersReady resolves (main.tsx awaits it before rendering). */
 export let api: HabitatApi;
 export let realtime: RealtimeClient;
-adaptersReady.then((a) => {
-  api = a.api;
-  realtime = a.realtime;
-});
+adaptersReady.then(
+  (a) => {
+    api = a.api;
+    realtime = a.realtime;
+  },
+  () => {}, // main.tsx shows the error
+);
 
 /** Mock-only access to the actor name used for audit lines. */
 export function setActor(name: string) {

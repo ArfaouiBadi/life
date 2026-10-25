@@ -8,6 +8,7 @@ Every library Life uses, its license, and why it is here (spec rule 12.4). Gener
 |---|---|---|---|
 | @fontsource-variable/archivo | 5.3.0 | OFL-1.1 | Archivo variable font, bundled for offline use |
 | @fontsource-variable/newsreader | 5.3.0 | OFL-1.1 | Newsreader variable font (italic, natural features), bundled |
+| @stomp/stompjs | 7.3.0 | Apache-2.0 | STOMP over WebSocket: live topics from the Spring backend (HTTP mode only) |
 | @tailwindcss/vite | 4.3.3 | MIT | Tailwind build plugin |
 | @tanstack/react-query | 5.104.5 | MIT | Server-state cache; the same hooks work against the mock and the HTTP backend |
 | class-variance-authority | 0.7.1 | Apache-2.0 | Component variants (shadcn/ui) |

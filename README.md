@@ -19,7 +19,7 @@ Open http://localhost:5173. Useful URLs:
 | `/login` | Choose a demo identity (operator, supervisor, homeowner, technician, admin) |
 | `/demo` | Pitch view: control room plus the family's phone, beats on the Space bar |
 | `?seed=2061` | Same seed, same world |
-| `?source=mock` | Force the simulation, even if configured for the backend |
+| `?source=mock` | Force the simulation, even if configured for the backend. Sticks for the tab; `?source=http` switches back |
 
 ## The pitch in three beats
 

@@ -4,8 +4,20 @@ import type { RealtimeClient } from "./RealtimeClient";
 export type DataSource = "mock" | "http";
 
 const params = new URLSearchParams(window.location.search);
-// ?source=mock is the safety net for the pitch: if the backend fails on stage, reload with it.
-export const source: DataSource = (params.get("source") ?? import.meta.env.VITE_DATA_SOURCE ?? "mock") === "http" ? "http" : "mock";
+
+// ?source=mock is the safety net for the pitch: if the backend fails on stage, reload with it. The choice sticks
+// for the tab, because in-app navigation drops the query and a later reload must not fall back; ?source=http undoes it.
+function pickSource(): DataSource {
+  let chosen = params.get("source");
+  try {
+    if (chosen === "mock" || chosen === "http") sessionStorage.setItem("life.source", chosen);
+    else chosen = sessionStorage.getItem("life.source");
+  } catch {
+    /* storage blocked: the URL and the build setting still decide */
+  }
+  return (chosen ?? import.meta.env.VITE_DATA_SOURCE ?? "mock") === "http" ? "http" : "mock";
+}
+export const source = pickSource();
 export const isMock = source === "mock";
 
 async function createMockAdapters(): Promise<{ api: HabitatApi; realtime: RealtimeClient }> {

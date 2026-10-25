@@ -62,3 +62,6 @@ One line per call the plan left open, or where the plan had to bend. Newest at t
 - Reconnect backoff doubles from 1 s up to 30 s, with a 10 s connection timeout and stompjs's default 10 s heartbeats.
 - Status mapping: CONNECTING before every attempt, OPEN on STOMP CONNECTED, CLOSED when the socket closes (the console already treats CLOSED as "uplink down").
 - The `/ws` connection sends no credentials, because the contract doesn't say how topics are secured. If they are, the token goes in the STOMP CONNECT headers.
+- `?source=` sticks for the tab (sessionStorage): /demo and in-app links drop the query, and a reload, including Vite's own after an edit, must not fall back to a dead backend mid-pitch. `?source=http` switches back.
+- Against the backend, the root bridge reloads the lists plus each open incident's bundle (playbook, crew, history) at start, after sign-in and after every reconnect. The mock keeps its single seed and its backlog replay, so the pitch path is unchanged.
+- "Uplink down" ends on the first OPEN after a CLOSED. It used to stay on forever when the socket failed before the first clock message, which the real broker makes likely at startup.

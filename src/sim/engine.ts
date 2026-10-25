@@ -176,13 +176,13 @@ export class SimEngine {
       if (inc.status !== "DETECTED" || inc.type === "HOME_OFFLINE") continue;
       inc.status = "ACKNOWLEDGED";
       inc.acknowledgedAt = isoAt(w);
-      inc.assignee = "Omar Farouk";
+      inc.assignee = "Omar Dhahri";
       const run = w.runs.find((r) => r.id === inc.runId);
       if (run) {
         run.autoRunAt = null;
         run.autoRunTick = null;
       }
-      addEvent(w, inc, "ACKNOWLEDGED", "Omar Farouk", "Acknowledged during the previous shift. Technician booked.", ox);
+      addEvent(w, inc, "ACKNOWLEDGED", "Omar Dhahri", "Acknowledged during the previous shift. Technician booked.", ox);
     }
     this.notify();
   }
@@ -310,7 +310,7 @@ export class SimEngine {
           reason: "PREDICTIVE",
           dueSol: sol + Math.max(1, Math.round((e.healthPct - 60) / Math.max(0.5, e.degradePerSol * 8))),
           status: e.healthPct < 70 ? "SCHEDULED" : "NEW",
-          assignee: e.healthPct < 70 ? "Kenji Sato" : null,
+          assignee: e.healthPct < 70 ? "Nabil Jendoubi" : null,
           healthTrend: Array.from({ length: 12 }, (_, i) => ({
             sol: sol - 11 + i,
             healthPct: +(e.healthPct + (11 - i) * e.degradePerSol * (e.healthPct < 70 ? 6 : 3)).toFixed(1),

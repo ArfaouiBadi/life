@@ -22,7 +22,7 @@ One line per call the plan left open, or where the plan had to bend. Newest at t
 - The fit window starts where pressure leaves its plateau (onset detection). Without it, flat pre-breach samples in the 10-minute window make the fit underestimate k by ~25% for the first minutes.
 - Time-to-danger for oxygen uses the pressure fit's k (a leak removes every gas at the same rate, and the pressure signal has better relative precision), with a gentle countdown smoother so the number ticks down steadily while the fit settles.
 - Headline time-to-danger ignores predictions more than 48 h out and ignores water (measured in sols, it would otherwise always be "the" headline).
-- Baseline warnings (two scrubbers at 62%, one recycler at 71%) open incidents that are pre-acknowledged by "Omar Farouk" from the previous shift, so they don't auto-run playbooks during the pitch.
+- Baseline warnings (two scrubbers at 62%, one recycler at 71%) open incidents that are pre-acknowledged by "Omar Dhahri" from the previous shift, so they don't auto-run playbooks during the pitch.
 - Equipment issues are grouped under the incident type their failure leads to: scrubber → CO2_BUILDUP, recycler → WATER_SHORTAGE, battery/solar → POWER_DEFICIT. This makes PB_CO2 and PB_WATER reachable from equipment warnings.
 - HOME_OFFLINE incidents carry severity ADVISORY (offline is a link state, but an incident needs a severity).
 - Home autopilot (8.13) also takes over at CRITICAL when the uplink is down, not only at EMERGENCY: nobody can acknowledge, and a 1.5 cm² breach is CRITICAL, not EMERGENCY.

@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 const REASON: Record<WorkOrder["reason"], string> = { PREDICTIVE: "Predicted", INCIDENT: "After an incident", ROUTINE: "Routine" };
 const STATUS: Record<WorkOrder["status"], string> = { NEW: "New", SCHEDULED: "Scheduled", IN_PROGRESS: "In progress", DONE: "Done" };
 
-/** Kenji's work orders: repairs booked from health trends before the part fails. */
+/** Nabil's work orders: repairs booked from health trends before the part fails. */
 export default function TechPage() {
   const { data: orders, isLoading } = useWorkOrders();
   const { data: dir } = useDirectory();

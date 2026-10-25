@@ -14,8 +14,8 @@ export const IDENTITIES: { code: string; name: string; role: Role; landing: stri
   { code: "OPS", name: "Lina Haddad", role: "OPERATOR", landing: "/ops/map", blurb: "Watches every home from the control room." },
   { code: "SUP", name: "Karim Ben Salah", role: "SUPERVISOR", landing: "/ops/map", blurb: "Operator view plus overrides and fleet health." },
   { code: "RES", name: "Amira Trabelsi", role: "HOMEOWNER", landing: "/resident", blurb: "Her family's home in New Jezero, on her phone." },
-  { code: "TEC", name: "Kenji Sato", role: "TECHNICIAN", landing: "/tech", blurb: "Repairs booked before parts fail." },
-  { code: "ADM", name: "Priya Raman", role: "ADMIN", landing: "/admin", blurb: "Subscriptions and new homes." },
+  { code: "TEC", name: "Nabil Jendoubi", role: "TECHNICIAN", landing: "/tech", blurb: "Repairs booked before parts fail." },
+  { code: "ADM", name: "Sarra Kchaou", role: "ADMIN", landing: "/admin", blurb: "Subscriptions and new homes." },
 ];
 
 /** Thin wrapper over the simulation. Reads get 120–350 ms of latency so loading states are real. */

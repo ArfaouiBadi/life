@@ -62,7 +62,7 @@ function bookTechnician(ctx: Ctx, equipmentType: string, title: string) {
     reason: "INCIDENT",
     dueSol: marsTime(new Date(w.epochMs + w.t * 1000)).sol + 1,
     status: "SCHEDULED",
-    assignee: "Kenji Sato",
+    assignee: "Nabil Jendoubi",
   };
   w.workOrders.unshift(wo);
 }

@@ -15,8 +15,8 @@ const IDENTITIES: { code: string; name: string; role: Role; blurb: string }[] = 
   { code: "OPS", name: "Lina Haddad", role: "OPERATOR", blurb: "Watches every home on Mars from the night-shift control room." },
   { code: "SUP", name: "Karim Ben Salah", role: "SUPERVISOR", blurb: "The operator view, plus fleet health and overrides." },
   { code: "RES", name: "Amira Trabelsi", role: "HOMEOWNER", blurb: "Her family's home in New Jezero, on her phone." },
-  { code: "TEC", name: "Kenji Sato", role: "TECHNICIAN", blurb: "Repairs booked before the parts fail." },
-  { code: "ADM", name: "Priya Raman", role: "ADMIN", blurb: "Subscriptions, and bringing a new home online." },
+  { code: "TEC", name: "Nabil Jendoubi", role: "TECHNICIAN", blurb: "Repairs booked before the parts fail." },
+  { code: "ADM", name: "Sarra Kchaou", role: "ADMIN", blurb: "Subscriptions, and bringing a new home online." },
 ];
 
 export function LoginPage() {
